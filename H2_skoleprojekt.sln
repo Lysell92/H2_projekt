@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H2_skoleprojekt.Server", "H2_skoleprojekt.Server\H2_skoleprojekt.Server.csproj", "{F3FC2E6F-2CD5-44E8-A4E8-CAF6C6BEF12C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaStoreApi", "..\WebApi_Vue_h2-main\PizzaStoreApi\PizzaStoreApi.csproj", "{DE551C87-684C-4FCD-939D-512764B33CE5}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "react_frontend", "react_frontend\", "{A479D433-B0A6-44B9-ADA3-DDA1988646C0}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_50679"
+		Debug.AspNetCompiler.PhysicalPath = "react_frontend\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50679\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_50679"
+		Release.AspNetCompiler.PhysicalPath = "react_frontend\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50679\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "50679"
+		SlnRelativePath = "react_frontend\"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3FC2E6F-2CD5-44E8-A4E8-CAF6C6BEF12C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3FC2E6F-2CD5-44E8-A4E8-CAF6C6BEF12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3FC2E6F-2CD5-44E8-A4E8-CAF6C6BEF12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3FC2E6F-2CD5-44E8-A4E8-CAF6C6BEF12C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE551C87-684C-4FCD-939D-512764B33CE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE551C87-684C-4FCD-939D-512764B33CE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE551C87-684C-4FCD-939D-512764B33CE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE551C87-684C-4FCD-939D-512764B33CE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A479D433-B0A6-44B9-ADA3-DDA1988646C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A479D433-B0A6-44B9-ADA3-DDA1988646C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A479D433-B0A6-44B9-ADA3-DDA1988646C0}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{A479D433-B0A6-44B9-ADA3-DDA1988646C0}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
