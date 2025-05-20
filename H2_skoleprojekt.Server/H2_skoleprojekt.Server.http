@@ -1,4 +1,4 @@
-@H2_skoleprojekt.Server_HostAddress = https://localhost:5001
+@H2_skoleprojekt.Server_HostAddress = http://localhost:5001
 
 GET {{H2_skoleprojekt.Server_HostAddress}}
 Accept: application/json

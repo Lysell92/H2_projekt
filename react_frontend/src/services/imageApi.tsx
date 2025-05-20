@@ -16,7 +16,7 @@ function ImageUpload() {
         formData.append('image', file);
 
         try {
-            const response = await axios.post('/api/diagnose', formData,
+            const response = await axios.post('/api/plantdiagnosis/diagnose', formData,
                 { headers: { 'Content-Type': 'multipart/form-data' }
             });
         setResult(response.data.prediction)

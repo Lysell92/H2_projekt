@@ -45,5 +45,10 @@ namespace H2_skoleprojekt.Server.Controllers
 
             return Ok(diagnosis);
         }
+        [HttpGet("ping")]
+        public IActionResult Ping()
+        {
+            return Ok("Backend is alive!");
+        }
     }
 }
