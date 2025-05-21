@@ -5,6 +5,19 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5172")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 builder.WebHost.ConfigureKestrel(Options =>
 {
     {
@@ -24,17 +37,19 @@ builder.WebHost.ConfigureKestrel(Options =>
 });
 // Add services to the container.
 
+builder.Services.AddDbContext<PlantDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+
 // Registers the assessment service
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 
-builder.Services.AddScoped<IPlantDiagnosisRepository, AssessmentService>();
+builder.Services.AddScoped<IPlantDbRepository, PlantDbRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<PlantDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+
 
 var app = builder.Build();
 
@@ -47,9 +62,11 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-/*app.UseHttpsRedirection();  //Skal nok bruges igen når webserveren skal integreres. */ 
+/*app.UseHttpsRedirection();  //Skal nok bruges igen når webserveren skal integreres. */
 
 app.UseAuthorization();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
 

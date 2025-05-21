@@ -8,6 +8,7 @@ using H2_skoleprojekt.Server.Services;
 using H2_skoleprojekt.Server.Models;
 using H2_skoleprojekt.Server.DB;
 using H2_skoleprojekt.Server.Controllers;
+using System.Drawing.Printing;
 
 #pragma warning disable CA1416 // Validate platform compability
 
@@ -15,14 +16,42 @@ public class AssessmentService : IAssessmentService
     
 {
     private readonly InferenceSession _session;
-    private readonly IPlantDiagnosisRepository _repository;
+    private readonly IPlantDbRepository _repository;
     
-    public AssessmentService(IPlantDiagnosisRepository repository)
+    public AssessmentService(IPlantDbRepository repository)
     {
         _session = new InferenceSession("Models/plant_classifier.onnx");
         _repository = repository;
     }
+
     public async Task<string> PredictAsync(IFormFile image)
+    {
+        using var stream = image.OpenReadStream();
+        using var bitmap = new Bitmap(stream);
+
+        var inputTensor = PreprocessImage(bitmap);
+
+        var inputs = new List<NamedOnnxValue>
+        {
+        NamedOnnxValue.CreateFromTensor("input_layer", inputTensor)
+        };
+
+        int predictedClass;
+        using (var results = _session.Run(inputs))
+        {
+            var output = results.First().AsEnumerable<float>().ToArray();
+            predictedClass = Array.IndexOf(output, output.Max());
+        }
+
+        var plant = await _repository.GetPlantByIdAsync(predictedClass);
+        string predictionResult = plant != null
+            ? $"{plant.planttype}: {plant.diseasename} - {plant.description}"
+            : "Plant is not recognizable by the model";
+
+        return predictionResult;
+    }
+
+ /*   public async Task<string> PredictAsync(IFormFile image)
     {
         var tempFilePath = Path.GetTempFileName();
         using (var stream = new FileStream(tempFilePath, FileMode.Create))
@@ -35,7 +64,7 @@ public class AssessmentService : IAssessmentService
 
         var inputs = new List<NamedOnnxValue>
         {
-            NamedOnnxValue.CreateFromTensor("input_name", inputTensor)
+            NamedOnnxValue.CreateFromTensor("input_layer", inputTensor)
         };
 
         int predictedClass;
@@ -47,15 +76,24 @@ public class AssessmentService : IAssessmentService
 
         var plant = await _repository.GetPlantByIdAsync(predictedClass);
         string predictionResult = plant != null
-            ? $"{plant.PlantType}: {plant.DiseaseName} - {plant.Description}"
+            ? $"{plant.planttype}: {plant.diseasename} - {plant.description}"
             : "Plant is not recognizable by the model";
         if (File.Exists(tempFilePath))
             File.Delete(tempFilePath);
 
         return predictionResult;
+    } This wants to use a file saved on the computer instead of reading it on memory. Might be useful, when using a fileserver */
+
+    public void PrintonnxNames()
+    {
+        var inputMeta = _session.InputMetadata;
+        foreach (var name in inputMeta.Keys)
+        {
+            Console.WriteLine($"Input name: {name}");
+        }
     }
 
-    private DenseTensor<float> PreprocessImage(Bitmap image)
+private DenseTensor<float> PreprocessImage(Bitmap image)
     {
         var resized = new Bitmap(128, 128);
         using (var g = Graphics.FromImage(resized))
@@ -64,7 +102,7 @@ public class AssessmentService : IAssessmentService
             g.DrawImage(image, 0, 0, 128, 128);
         }
 
-        var input = new DenseTensor<float>(new[] { 1, 3, 128, 128 });
+        var input = new DenseTensor<float>(new[] { 1, 128, 128, 3 });
         for (int y = 0; y < 128; y++)
         {
 

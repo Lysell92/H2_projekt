@@ -6,6 +6,7 @@ import path from 'path';*/
 export default defineConfig({
     plugins: [react()],
     server: {
+        port: 5172,
         proxy: {
             '/api': {
                 target: 'http://localhost:5001', // your ASP.NET Core backend

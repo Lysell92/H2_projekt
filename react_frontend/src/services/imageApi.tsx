@@ -15,8 +15,10 @@ function ImageUpload() {
         const formData = new FormData();
         formData.append('image', file);
 
+        
+        const apiUrl = import.meta.env.VITE_URL_API;
         try {
-            const response = await axios.post('/api/plantdiagnosis/diagnose', formData,
+            const response = await axios.post(`${apiUrl}/api/plantdb/diagnose`, formData,
                 { headers: { 'Content-Type': 'multipart/form-data' }
             });
         setResult(response.data.prediction)

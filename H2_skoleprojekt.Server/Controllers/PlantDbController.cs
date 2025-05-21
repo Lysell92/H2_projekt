@@ -9,12 +9,12 @@ namespace H2_skoleprojekt.Server.Controllers
 { 
 [ApiController]
 [Route("api/[controller]")]
-    public class PlantDiagnosisController : ControllerBase
+    public class PlantDbController : ControllerBase
     {
         private readonly PlantDbContext _context;
         private readonly IAssessmentService _assessmentService;
 
-        public PlantDiagnosisController(IAssessmentService assessmentService, PlantDbContext context)
+        public PlantDbController(IAssessmentService assessmentService, PlantDbContext context)
         {
             _assessmentService = assessmentService;
             _context = context;
@@ -38,7 +38,7 @@ namespace H2_skoleprojekt.Server.Controllers
             var diseaseName = parts[1];
 
             // Looks into the Database for match
-            var diagnosis = await _context.PlantDiagnosis!.FirstOrDefaultAsync(p => p.PlantType == plantType && p.DiseaseName == diseaseName);
+            var diagnosis = await _context.plantdb!.FirstOrDefaultAsync(p => p.planttype == plantType && p.diseasename == diseaseName);
 
             if (diagnosis == null)
                 return NotFound("Diagnosis not found in database.");
@@ -48,7 +48,27 @@ namespace H2_skoleprojekt.Server.Controllers
         [HttpGet("ping")]
         public IActionResult Ping()
         {
+            _assessmentService.PrintonnxNames();
             return Ok("Backend is alive!");
+        }
+
+        [HttpGet("testdb")]
+        public async Task<IActionResult> TestDatabase()
+        {
+            try
+            {
+                // Try to get the first record in PlantDiagnosis table
+                var testDiagnosis = await _context.plantdb!.FirstOrDefaultAsync();
+
+                if (testDiagnosis == null)
+                    return NotFound("No records found in PlantDb table.");
+
+                return Ok(testDiagnosis);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Database error: {ex.Message}");
+            }
         }
     }
 }

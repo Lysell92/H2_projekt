@@ -8,6 +8,6 @@ namespace H2_skoleprojekt.Server.DB
     public PlantDbContext(DbContextOptions<PlantDbContext> options)
     : base(options) { }
 
-    public DbSet<PlantDiagnosisModel>? PlantDiagnosis { get; set; }
+    public DbSet<PlantDbModel>? plantdb { get; set; }
     }
 }
