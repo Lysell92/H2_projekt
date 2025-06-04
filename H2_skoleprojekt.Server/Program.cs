@@ -1,6 +1,7 @@
 using H2_skoleprojekt.Server.DB;
 using H2_skoleprojekt.Server.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -64,12 +65,25 @@ if (app.Environment.IsDevelopment())
 
 /*app.UseHttpsRedirection();  //Skal nok bruges igen når webserveren skal integreres. */
 
-app.UseAuthorization();
+app.UseRouting();
 
 app.UseCors(MyAllowSpecificOrigins);
+
+app.UseAuthorization();
 
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+
+var lifetime = app.Lifetime;
+var endpointDataSource = app.Services.GetRequiredService<EndpointDataSource>();
+
+lifetime.ApplicationStarted.Register(() =>
+{
+    foreach (var endpoint in endpointDataSource.Endpoints)
+    {
+        Console.WriteLine($"Endpoint: {endpoint.DisplayName}");
+    }
+});
 
 app.Run();

@@ -2,6 +2,5 @@
 
 public interface IAssessmentService
 {
-    Task<string> PredictAsync(IFormFile image);
-    void PrintonnxNames();
+    Task<List<string>> PredictTopAsync(IFormFile image, int topN);
 }

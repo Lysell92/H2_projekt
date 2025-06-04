@@ -10,5 +10,6 @@ namespace H2_skoleprojekt.Server.Models
         public string? diseasename { get; set; }
         public string? description { get; set; }
         public string? assessment { get; set; }
+        public string? stringlabel { get; set; }
     }
 }

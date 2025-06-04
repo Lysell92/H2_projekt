@@ -6,9 +6,9 @@ using H2_skoleprojekt.Server.Models;
 using H2_skoleprojekt.Server.DB;
 
 namespace H2_skoleprojekt.Server.Controllers
-{ 
-[ApiController]
-[Route("api/[controller]")]
+{
+    [ApiController]
+    [Route("api/[controller]")]
     public class PlantDbController : ControllerBase
     {
         private readonly PlantDbContext _context;
@@ -28,29 +28,32 @@ namespace H2_skoleprojekt.Server.Controllers
                 return BadRequest("No image uploaded.");
             }
 
-            var prediction = await _assessmentService.PredictAsync(image);
+            List<string> predictedLabels = await _assessmentService.PredictTopAsync(image, 5);
 
-            var parts = prediction.Split(" - ");
-            if (parts.Length != 2)
-                return BadRequest("Invalid prediction format.");
+            string? matchedLabel = null;
+            foreach (var label in predictedLabels)
 
-            var plantType = parts[0];
-            var diseaseName = parts[1];
+            {
+                var cleanlabel = label.Split('(')[0].Trim();
+                var result = await _context.plantdb!.FirstOrDefaultAsync(p => p.stringlabel == cleanlabel);
+                if (result != null)
+                {
+                    matchedLabel = label;
+                    Console.WriteLine($"📸 Model predicted label: {matchedLabel}");
+                    return Ok(result);
+                }
+            }
 
-            // Looks into the Database for match
-            var diagnosis = await _context.plantdb!.FirstOrDefaultAsync(p => p.planttype == plantType && p.diseasename == diseaseName);
-
-            if (diagnosis == null)
-                return NotFound("Diagnosis not found in database.");
-
-            return Ok(diagnosis);
+            return NotFound("Plant or disease is not found in the database.");
         }
-        [HttpGet("ping")]
-        public IActionResult Ping()
+
+
+        [HttpGet("diagnose")]
+        public IActionResult DiagnoseGet()
         {
-            _assessmentService.PrintonnxNames();
-            return Ok("Backend is alive!");
+            return BadRequest("This endpoint only supports POST with an image file.");
         }
+
 
         [HttpGet("testdb")]
         public async Task<IActionResult> TestDatabase()

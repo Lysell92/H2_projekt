@@ -23,11 +23,12 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    padding-top: 50px;
 }
 
 h1 {
@@ -54,15 +55,60 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Custom made css */
+.plant-green {
+    background-color: #208f23;
 }
+
+.carousel-img {
+    width: 50%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border: 3px solid #fdf;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+.background-home {
+    background-image: url('/homebackground.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.background-about {
+    background-image: url('/aboutbackground.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+body.background-pd {
+    background-image: url('/pdbackground.jpg');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.upload-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            color: #213547;
+            background-color: #f2f2f2;
+        }
+
+        a:hover {
+            color: #747bff;
+        }
+
+        button {
+            background-color: #f9f9f9;
+        }
+    }

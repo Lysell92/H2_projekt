@@ -1,48 +1,25 @@
-import { useState } from 'react';
 import axios from 'axios';
 
-function ImageUpload() {
-    const [file, setFile] = useState(null);
-    const [result, setResult] = useState("");
+export async function imageApi(file: File): Promise<string>  {
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
 
-    const handleUpload = async () => {
-        if (!file) return;
+        /*const apiUrl = import.meta.env.VITE_URL_API;
+        console.log("Calling API:", `${apiUrl}/api/plantdb/diagnose`);*/
+    try {
+        const formData = new FormData(); 
+        formData.append('image', file)
 
-        const formData = new FormData();
-        formData.append('image', file);
-
-        
-        const apiUrl = import.meta.env.VITE_URL_API;
-        try {
-            const response = await axios.post(`${apiUrl}/api/plantdb/diagnose`, formData,
-                { headers: { 'Content-Type': 'multipart/form-data' }
+        const response = await axios.post('http://localhost:5001/api/plantdb/diagnose',
+                { headers: { 'Content-Type': 'multipart/form-data' },
             });
-        setResult(response.data.prediction)
-    }   catch (error) {
-        console.error(error);
-        setResult("Error occured uploading or diagnosing.");
-    }
+        return response.data.prediction;
+        
+        }
+        catch (error)
+        {
+            console.error(error);
+            return("Error occured uploading or diagnosing.");
+        }
 };
 
-
-    return (
-        <div>
-        <h2>Upload Plant Image </h2>
-            <input type = "file" onChange = { handleFileChange } />
-            <button onClick={ handleUpload }>Upload</button>
-
-    {result && (
-            <div>
-                <h3>Prediction: </h3>
-                <p> { result } </p>
-                </div>
-            )}
-        </div>
-    );
-}
-
-export default ImageUpload;
+export default imageApi;
