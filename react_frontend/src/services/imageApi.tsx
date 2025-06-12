@@ -1,25 +1,31 @@
 import axios from 'axios';
 
-export async function imageApi(file: File): Promise<string>  {
 
-
-        /*const apiUrl = import.meta.env.VITE_URL_API;
-        console.log("Calling API:", `${apiUrl}/api/plantdb/diagnose`);*/
-    try {
-        const formData = new FormData(); 
-        formData.append('image', file)
-
-        const response = await axios.post('http://localhost:5001/api/plantdb/diagnose',
-                { headers: { 'Content-Type': 'multipart/form-data' },
-            });
-        return response.data.prediction;
-        
-        }
-        catch (error)
-        {
-            console.error(error);
-            return("Error occured uploading or diagnosing.");
-        }
+type PlantDetails = {
+    stringlabel: string;
+    description: string;
+    assessment: string;
 };
+
+type ApiResult = {
+    prediction: string;
+    details: PlantDetails;
+};
+
+export async function imageApi(file: File): Promise<ApiResult> {
+
+    const formData = new FormData();
+    formData.append('image', file)
+
+    const response = await axios.post('https://plantweb.local/api/plantdb/diagnose',
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    );
+    return response.data;
+}
 
 export default imageApi;

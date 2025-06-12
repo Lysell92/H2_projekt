@@ -1,16 +1,15 @@
 {
     "compilerOptions": {
-        "types": [ "node" ],
         "target": "ESnext",
         "module": "ESNext",
         "moduleResolution": "node",
+        "strict": true,
+        "jsx": "react-jsx",
         "esModuleInterop": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "skipLibCheck": true
     },
-    "include": ["tailwind.config.ts", "postcss.config.ts", "src"],
-    "files": [],
-    "references": [
-        { "path": "./tsconfig.app.json" },
-        { "path": "./tsconfig.node.json" }
-    ]
+    "include": [ "src" ]
+    
 }

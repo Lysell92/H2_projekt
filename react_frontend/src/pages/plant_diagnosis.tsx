@@ -3,22 +3,37 @@ import { imageApi } from '../services/imageApi';
 
 function Upload() {
     const [file, setFile] = useState<File | null>(null);
-    const [result, setResult] = useState("");
+
+    type PlantDetails = {
+        stringlabel: string;
+        description: string;
+        assessment: string;
+    };
+
+    type ApiResult = {
+        prediction: string;
+        details: PlantDetails;
+    };
+
+    const [result, setResult] = useState<ApiResult | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setFile(e.target.files[0]);
         }
     };
+    const [error, setError] = useState<string | null>(null);
 
     const handleUpload = async () => {
         if (!file) return;
+        setError(null);
         try {
-            const prediction = await imageApi(file);
-            setResult(prediction);
+            const result = await imageApi(file);
+            setResult(result);
         } catch (err) {
             console.error(err);
-            setResult("Error occurred during diagnosis.");
+            setResult(null);
+            setError("Error occurred during diagnosis.");
         }
     };
 
@@ -42,7 +57,13 @@ function Upload() {
                     {result && (
                         <div className="mt-4 p-3 bg-light rounded w-100">
                             <h2 className="fw-bold h5">Prediction:</h2>
-                            <p>{result}</p>
+                            <p>{result.prediction}</p>
+
+                            <h2 className="fw-bold h5">Description:</h2>
+                            <p>{result.details.description}</p>
+
+                            <h2 className="fw-bold h5">Assessment:</h2>
+                            <p>{result.details.assessment}</p>
                         </div>
                     )}
                 </div>

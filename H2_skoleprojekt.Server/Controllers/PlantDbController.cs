@@ -40,38 +40,15 @@ namespace H2_skoleprojekt.Server.Controllers
                 {
                     matchedLabel = label;
                     Console.WriteLine($"📸 Model predicted label: {matchedLabel}");
-                    return Ok(result);
+                    return Ok(new
+                    {
+                        prediction = matchedLabel,
+                        details = result
+                    });
                 }
             }
 
             return NotFound("Plant or disease is not found in the database.");
-        }
-
-
-        [HttpGet("diagnose")]
-        public IActionResult DiagnoseGet()
-        {
-            return BadRequest("This endpoint only supports POST with an image file.");
-        }
-
-
-        [HttpGet("testdb")]
-        public async Task<IActionResult> TestDatabase()
-        {
-            try
-            {
-                // Try to get the first record in PlantDiagnosis table
-                var testDiagnosis = await _context.plantdb!.FirstOrDefaultAsync();
-
-                if (testDiagnosis == null)
-                    return NotFound("No records found in PlantDb table.");
-
-                return Ok(testDiagnosis);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Database error: {ex.Message}");
-            }
         }
     }
 }

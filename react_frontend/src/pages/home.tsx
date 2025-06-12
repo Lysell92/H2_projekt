@@ -11,7 +11,7 @@ function Home() {
         []);
 
     return (
-        <h1 className="fs-3">Welcome to my image-recognition app</h1>
+        <h3 className="text-center fw-semibold mb-4 text-dark">Welcome to my image-recognition app</h3>
     );
 }
 
